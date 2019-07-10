@@ -1,0 +1,12 @@
+# 公测环境
+server:
+  port: 80
+spring:
+  profiles: beta
+# 百度对应的配置
+baidu:
+  #  百度人脸识别配置
+  face:
+    appId: ""
+    appKey: ""
+    secretKey: ""

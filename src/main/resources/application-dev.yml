@@ -1,0 +1,28 @@
+server:
+  port: 80
+spring:
+  profiles: dev
+  mvc:
+    static-path-pattern: /**
+    # 默认值为 classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+# 百度对应的配置
+baidu:
+  #  百度人脸识别配置
+  face:
+    appId: "16734411"
+    appKey: "3m1LTmGGDEwjf3Gj6U4VkGGM"
+    secretKey: "UQFopX1r0ysV2Xp1QYv03cHjBsYmKvDY"
+
+#   匹配度达到多少算合格
+face:
+  # 人脸识别度达到多少算合格
+  matchScore: 90
+  #  key
+  appKey: "faceApp"
+  #  秘钥
+  appSecret: "UQFopX1r0ysV2Xp1QYv03cHjBsYmKvDY"
+  #  盐值
+  salt: "sgkj311"
+
+

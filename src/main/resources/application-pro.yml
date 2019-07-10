@@ -1,0 +1,14 @@
+#    生产环境
+server:
+  port: 80
+spring:
+  profiles: pro
+# 百度对应的配置
+baidu:
+  #  百度人脸识别配置
+  face:
+    appId: ""
+    appKey: ""
+    secretKey: ""
+
+

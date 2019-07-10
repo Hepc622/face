@@ -1,0 +1,12 @@
+#测试环境
+server:
+  port: 8080
+spring:
+  profiles: test
+# 百度对应的配置
+baidu:
+  #  百度人脸识别配置
+  face:
+    appId: "16734411"
+    appKey: "3m1LTmGGDEwjf3Gj6U4VkGGM"
+    secretKey: "UQFopX1r0ysV2Xp1QYv03cHjBsYmKvDY"
