@@ -118,12 +118,15 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
                 Integer score = jsonObject.getInteger("score");
                 /*如果达到指定分数标识合格返回该数据*/
                 if (matchScore <= score) {
-                    return JSONObject.toJSONString(Result.success(jsonObject));
+//                    return JSONObject.toJSONString(Result.success(jsonObject));
+                    return jsonObject.getString("user_id");
                 }
             }
-            return JSONObject.toJSONString(Result.fail("人脸信息与人脸库信息不符合"));
+//            return JSONObject.toJSONString(Result.fail("人脸信息与人脸库信息不符合"));
+            return "0";
         } else {
-            return JSONObject.toJSONString(Result.fail(error_msg));
+//            return JSONObject.toJSONString(Result.fail(error_msg));
+            return "0";
         }
     }
 
@@ -150,9 +153,11 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
         JSONObject res = FaceUtils.add(client, json);
         String error_msg = res.getString("error_msg");
         if (SUCCESS.equals(error_msg)) {
-            return JSONObject.toJSONString(Result.success(res.getJSONObject("result")));
+//            return JSONObject.toJSONString(Result.success(res.getJSONObject("result")));
+            return "true";
         } else {
-            return JSONObject.toJSONString(Result.fail(error_msg));
+//            return JSONObject.toJSONString(Result.fail(error_msg));
+            return "false";
         }
     }
 
