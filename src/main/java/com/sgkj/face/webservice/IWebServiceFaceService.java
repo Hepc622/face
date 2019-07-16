@@ -1,16 +1,20 @@
-package com.sgkj.face.service;
+package com.sgkj.face.webservice;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sgkj.face.common.dto.Result;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
 
 /**
  * @Author HPC
  * @Description faceService
  * @Date 2019/7/8 16:34
  */
-public interface IFaceService {
+@WebService
+public interface IWebServiceFaceService {
     /**
      * @return 返回人脸对应的数据
      * @author : HPC
@@ -18,7 +22,8 @@ public interface IFaceService {
      * @date : 2019/7/8 16:37
      */
     @WebMethod
-    Result<JSONObject> faceDetect(JSONObject json);
+    @WebResult(name = "String")
+    String faceDetect(@WebParam(name = "data") String json);
 
 
     /**
@@ -28,7 +33,8 @@ public interface IFaceService {
      * @date : 2019/7/8 17:01
      */
     @WebMethod
-    Result<JSONObject> faceMatch(JSONObject json);
+    @WebResult(name = "String")
+    String faceMatch(@WebParam(name = "data") String json);
 
 
     /**
@@ -38,7 +44,8 @@ public interface IFaceService {
      * @date : 2019/7/8 17:04
      */
     @WebMethod
-    Result<JSONObject> faceSearch(JSONObject json);
+    @WebResult(name = "String")
+    String faceSearch(@WebParam(name = "data") String json);
 
     /**
      * @return 字符串信息
@@ -47,7 +54,8 @@ public interface IFaceService {
      * @date : 2019/7/8 17:41
      */
     @WebMethod
-    Result<JSONObject> registerFace(JSONObject json);
+    @WebResult(name = "String")
+    String registerFace(@WebParam(name = "data") String json);
 
 
     /**
@@ -56,7 +64,8 @@ public interface IFaceService {
      * @date : 2019/7/8 17:42
      */
     @WebMethod
-    Result<JSONObject> updateFace(JSONObject json);
+    @WebResult(name = "String")
+    String updateFace(@WebParam(name = "data") String json);
 
     /**
      * @author : HPC
@@ -64,7 +73,8 @@ public interface IFaceService {
      * @date : 2019/7/8 17:43
      */
     @WebMethod
-    Result<JSONObject> deleteFace(JSONObject json);
+    @WebResult(name = "String")
+    String deleteFace(@WebParam(name = "data") String json);
 
     /**
      * @author : HPC
@@ -72,5 +82,6 @@ public interface IFaceService {
      * @date : 2019/7/10 9:01
      */
     @WebMethod
-    Result<JSONObject> faceVerify(JSONObject json);
+    @WebResult(name = "String")
+    String faceVerify(@WebParam(name = "data") String json);
 }

@@ -17,10 +17,13 @@ public class Result<T> implements Serializable {
     private String msg;
     private T data;
 
-    private Result(String code, String msg, T data) {
+    public Result(String code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
+    }
+
+    public Result() {
     }
 
     public static <T> Result<T> success(String msg) {
