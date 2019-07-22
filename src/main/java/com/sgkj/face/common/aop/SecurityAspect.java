@@ -1,4 +1,4 @@
-package com.sgkj.face.aop;
+package com.sgkj.face.common.aop;
 
 import com.sgkj.face.common.annotations.NoRight;
 import com.sgkj.face.common.dto.Result;
