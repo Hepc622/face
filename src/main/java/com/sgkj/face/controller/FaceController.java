@@ -87,13 +87,13 @@ public class FaceController {
         return iFaceService.deleteFace(json);
     }
 
-//    /**
-//     * @author : HPC
-//     * @description : 在线活体检测
-//     * @date : 2019/7/8 17:43
-//     */
-//    @RequestMapping(value = "/faceVerify", method = {RequestMethod.POST})
-//    public Result<JSONObject> faceVerify(@RequestBody JSONObject json) {
-//        return iFaceService.faceVerify(json);
-//    }
+    /**
+     * @author : HPC
+     * @description : 在线活体检测
+     * @date : 2019/7/8 17:43
+     */
+    @RequestMapping(value = "/faceVerify", method = {RequestMethod.POST})
+    public Result<JSONObject> faceVerify(@RequestBody JSONObject json) {
+        return iFaceService.faceVerify(json);
+    }
 }

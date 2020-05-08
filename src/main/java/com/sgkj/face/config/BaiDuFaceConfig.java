@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Primary;
  * @Date 2019/7/8 16:18
  */
 @Configuration
-@ConfigurationProperties
 public class BaiDuFaceConfig {
     /**
      * 百度应用appKey

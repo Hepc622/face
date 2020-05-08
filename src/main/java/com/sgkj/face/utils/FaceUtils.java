@@ -298,7 +298,7 @@ public class FaceUtils {
                 faceField = object.getString("face_field");
             }
             /*创建检测活体对象*/
-            FaceVerifyRequest faceVerifyRequest = new FaceVerifyRequest(image, imageType,faceField);
+            FaceVerifyRequest faceVerifyRequest = new FaceVerifyRequest(image, imageType, faceField);
             /*添加到获取检测请求数据list中*/
             list.add(faceVerifyRequest);
         }

@@ -1,8 +1,5 @@
 package com.sgkj.face.webservice;
 
-import com.alibaba.fastjson.JSONObject;
-import com.sgkj.face.common.dto.Result;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;

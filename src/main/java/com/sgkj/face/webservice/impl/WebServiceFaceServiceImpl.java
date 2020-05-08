@@ -99,7 +99,7 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
         /*判断请求必要参数*/
         boolean images = json.containsKey("image");
         if (!images) {
-            return JSONObject.toJSONString(Result.fail(Code.PARAM_IMAGE, "请求参数缺失【image】字段"));
+            return JSONObject.toJSONString(Result.success("请求参数缺失【image】字段"));
         }
 
         /*搜索人脸数据*/
@@ -117,17 +117,13 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
                 /*获取对比分数*/
                 Integer score = jsonObject.getInteger("score");
                 /*如果达到指定分数标识合格返回该数据*/
-                if (matchScore <= score) {
-//                    return JSONObject.toJSONString(Result.success(jsonObject));
-                    return jsonObject.getString("user_id");
+                if (score >= matchScore) {
+                    return JSONObject.toJSONString(Result.success(Code.SUCCESS, "操作成功", jsonObject.getString("user_info")));
                 }
             }
-//            return JSONObject.toJSONString(Result.fail("人脸信息与人脸库信息不符合"));
-            return "0";
-        } else {
-//            return JSONObject.toJSONString(Result.fail(error_msg));
-            return "0";
+            return JSONObject.toJSONString(Result.fail("人脸信息与人脸库信息不符合！"));
         }
+        return JSONObject.toJSONString(Result.fail(error_msg));
     }
 
     /**
@@ -142,22 +138,30 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
         /*判断请求必要参数*/
         boolean images = json.containsKey("image");
         if (!images) {
-            return JSONObject.toJSONString(Result.fail(Code.PARAM_IMAGE, "请求参数缺失【image】字段"));
+            return JSONObject.toJSONString(Result.failParam("请求参数缺失【image】字段"));
         }
         boolean userId = json.containsKey("user_id");
         if (!userId) {
-            return JSONObject.toJSONString(Result.fail(Code.PARAM_USER_ID, "请求参数缺失【user_id】字段"));
+            return JSONObject.toJSONString(Result.failParam("请求参数缺失【user_id】字段"));
+        } else {
+            //身份证|姓名|性别(1男2女)|出生日期(yyyy-mm-dd)|手机号码|地址|
+            String user_id = json.getString("user_id");
+            if (user_id.contains("|")) {
+                String[] split = user_id.split("\\|");
+                json.put("user_info", user_id);
+                json.put("user_id", split[0]);
+            } else {
+                return JSONObject.toJSONString(Result.failParam("请求参数【user_id】字段格式不正确！正确格式 身份证|姓名|性别(1男2女)|出生日期(yyyy-mm-dd)|手机号码|地址| "));
+            }
         }
 
         /*添加人脸数据*/
         JSONObject res = FaceUtils.add(client, json);
         String error_msg = res.getString("error_msg");
         if (SUCCESS.equals(error_msg)) {
-//            return JSONObject.toJSONString(Result.success(res.getJSONObject("result")));
-            return "true";
+            return JSONObject.toJSONString(Result.success());
         } else {
-//            return JSONObject.toJSONString(Result.fail(error_msg));
-            return "false";
+            return JSONObject.toJSONString(Result.fail(error_msg));
         }
     }
 
