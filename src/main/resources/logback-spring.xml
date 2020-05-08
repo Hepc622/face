@@ -26,9 +26,8 @@
     <springProfile name="!pro">
         <!--指定包的日志级别-->
         <logger name="org.springframework.web" level="INFO"/>
-        <root level="info">
+        <root level="INFO">
             <appender-ref ref="CONSOLE" />
-            <appender-ref ref="flatfile"/>
         </root>
     </springProfile>
 

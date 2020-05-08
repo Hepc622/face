@@ -7,6 +7,9 @@ import com.sgkj.face.common.dto.Code;
 import com.sgkj.face.common.dto.Result;
 import com.sgkj.face.utils.FaceUtils;
 import com.sgkj.face.webservice.IWebServiceFaceService;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.cxf.interceptor.InInterceptors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,9 @@ import javax.jws.WebService;
         targetNamespace = "http://webservice.face.sgkj.com", // 与接口中的命名空间一致,一般是接口的包名倒
         endpointInterface = "com.sgkj.face.webservice.IWebServiceFaceService"// 接口地址
 )
+//@InInterceptors(interceptors = {"com.sgkj.face.interceptor.FaceAuthInterceptor"})
 @Service
+@Slf4j
 public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
 
     private final String SUCCESS = "SUCCESS";
@@ -95,10 +100,12 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
      */
     @Override
     public String faceSearch(String sJson) {
+        log.info("search face in param {}", sJson);
         JSONObject json = JSONObject.parseObject(sJson);
         /*判断请求必要参数*/
         boolean images = json.containsKey("image");
         if (!images) {
+            log.info("search face in param 请求参数缺失【image】字段");
             return JSONObject.toJSONString(Result.success("请求参数缺失【image】字段"));
         }
 
@@ -118,11 +125,14 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
                 Integer score = jsonObject.getInteger("score");
                 /*如果达到指定分数标识合格返回该数据*/
                 if (score >= matchScore) {
+                    log.info("search face success result{}",jsonObject.getString("user_info"));
                     return JSONObject.toJSONString(Result.success(Code.SUCCESS, "操作成功", jsonObject.getString("user_info")));
                 }
             }
+            log.info("search face 人脸信息与人脸库信息不符合 {}",search.toJSONString());
             return JSONObject.toJSONString(Result.fail("人脸信息与人脸库信息不符合！"));
         }
+        log.info("search face fail {}", search.toJSONString());
         return JSONObject.toJSONString(Result.fail(error_msg));
     }
 
@@ -134,14 +144,17 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
      */
     @Override
     public String registerFace(String sJson) {
+        log.info("register face in param {}", sJson);
         JSONObject json = JSONObject.parseObject(sJson);
         /*判断请求必要参数*/
         boolean images = json.containsKey("image");
         if (!images) {
+            log.info("register face 请求参数缺失【image】字段");
             return JSONObject.toJSONString(Result.failParam("请求参数缺失【image】字段"));
         }
         boolean userId = json.containsKey("user_id");
         if (!userId) {
+            log.info("register face 请求参数缺失【user_id】字段");
             return JSONObject.toJSONString(Result.failParam("请求参数缺失【user_id】字段"));
         } else {
             //身份证|姓名|性别(1男2女)|出生日期(yyyy-mm-dd)|手机号码|地址|
@@ -151,6 +164,7 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
                 json.put("user_info", user_id);
                 json.put("user_id", split[0]);
             } else {
+                log.info("register face 请求参数【user_id】字段 格式不正确");
                 return JSONObject.toJSONString(Result.failParam("请求参数【user_id】字段格式不正确！正确格式 身份证|姓名|性别(1男2女)|出生日期(yyyy-mm-dd)|手机号码|地址| "));
             }
         }
@@ -159,8 +173,10 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
         JSONObject res = FaceUtils.add(client, json);
         String error_msg = res.getString("error_msg");
         if (SUCCESS.equals(error_msg)) {
+            log.info("register face success");
             return JSONObject.toJSONString(Result.success());
         } else {
+            log.info("register face fail");
             return JSONObject.toJSONString(Result.fail(error_msg));
         }
     }
