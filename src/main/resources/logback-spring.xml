@@ -2,39 +2,35 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <!-- spring property from env or os -->
-    <springProperty scope="context" name="profile" source="spring.profiles.active" defaultValue="unknown_profile"/>​
-    <springProperty scope="context" name="springAppName" source="spring.application.name" default="unknown_app"/>
+    <springProperty scope="context" name="profile" source="spring.profiles.active" defaultValue="dev"/>​
+    <springProperty scope="context" name="appName" source="spring.application.name" default="default_app"/>
 
     <!-- log args -->
-    <property name="LOG_FILE" value="./logs/${springAppName}.log"/>
-
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [${springAppName}] ${LOG_LEVEL_PATTERN}  ${PID} --- [%15.15t] %-40.40logger{40} : %m%n"/>
+    <property name="LOG_FILE" value="./logs/${appName}.log"/>
 
     <!-- Appender to log to file -->
-    <appender name="flatfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="FLAT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
             <charset>utf8</charset>
         </encoder>
     </appender>
 
     <springProfile name="!pro">
-        <!--指定包的日志级别-->
-        <logger name="org.springframework.web" level="INFO"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FLAT_FILE"/>
         </root>
     </springProfile>
 
     <springProfile name="pro">
-        <logger name="org.springframework.web" level="INFO"/>
         <root level="INFO">
-            <appender-ref ref="flatfile"/>
+            <appender-ref ref="FLAT_FILE"/>
         </root>
     </springProfile>
 </configuration>
