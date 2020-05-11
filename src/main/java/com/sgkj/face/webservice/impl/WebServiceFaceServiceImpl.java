@@ -129,8 +129,8 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
                     return JSONObject.toJSONString(Result.success(Code.SUCCESS, "操作成功", jsonObject.getString("user_info")));
                 }
             }
-            log.info("search face 人脸信息与人脸库信息不符合 {}",search.toJSONString());
-            return JSONObject.toJSONString(Result.fail("人脸信息与人脸库信息不符合！"));
+            log.info("search face 人脸信息不存在,请前往采集 {}",search.toJSONString());
+            return JSONObject.toJSONString(Result.fail("人脸信息不存在,请前往采集！"));
         }
         log.info("search face fail {}", search.toJSONString());
         return JSONObject.toJSONString(Result.fail(error_msg));

@@ -2,8 +2,8 @@ server:
   port: 80
 spring:
   profiles: dev
-  mvc:
-    static-path-pattern: /**
+#  mvc:
+#    static-path-pattern: /**
     # 默认值为 classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
 
 # 百度对应的配置
