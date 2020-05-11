@@ -2,8 +2,8 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <!-- spring property from env or os -->
-    <springProperty scope="context" name="profile" source="spring.profiles.active" defaultValue="dev"/>​
-    <springProperty scope="context" name="appName" source="spring.application.name" default="default_app"/>
+    <springProperty scope="context" name="profile" source="spring.profiles.active" defaultValue="unknown_profile"/>​
+    <springProperty scope="context" name="appName" source="spring.application.name" default="unknown_app"/>
 
     <!-- log args -->
     <property name="LOG_FILE" value="./logs/${appName}.log"/>
@@ -21,16 +21,10 @@
         </encoder>
     </appender>
 
-    <springProfile name="!pro">
-        <root level="INFO">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="FLAT_FILE"/>
-        </root>
-    </springProfile>
-
-    <springProfile name="pro">
-        <root level="INFO">
-            <appender-ref ref="FLAT_FILE"/>
-        </root>
-    </springProfile>
+    <!--指定包的日志级别-->
+    <logger name="org.springframework.web" level="INFO"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FLAT_FILE"/>
+    </root>
 </configuration>
