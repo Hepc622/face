@@ -7,9 +7,7 @@ import com.sgkj.face.common.dto.Code;
 import com.sgkj.face.common.dto.Result;
 import com.sgkj.face.utils.FaceUtils;
 import com.sgkj.face.webservice.IWebServiceFaceService;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.cxf.interceptor.InInterceptors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -100,8 +98,8 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
      */
     @Override
     public String faceSearch(String sJson) {
-        log.info("search face in param {}", sJson);
         JSONObject json = JSONObject.parseObject(sJson);
+        log.info("search face in params user_id={}", json.getString("user_id"));
         /*判断请求必要参数*/
         boolean images = json.containsKey("image");
         if (!images) {
@@ -125,11 +123,11 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
                 Integer score = jsonObject.getInteger("score");
                 /*如果达到指定分数标识合格返回该数据*/
                 if (score >= matchScore) {
-                    log.info("search face success result{}",jsonObject.getString("user_info"));
+                    log.info("search face success result{}", jsonObject.getString("user_info"));
                     return JSONObject.toJSONString(Result.success(Code.SUCCESS, "操作成功", jsonObject.getString("user_info")));
                 }
             }
-            log.info("search face 人脸信息不存在,请前往采集 {}",search.toJSONString());
+            log.info("search face 人脸信息不存在,请前往采集 {}", search.toJSONString());
             return JSONObject.toJSONString(Result.fail("人脸信息不存在,请前往采集！"));
         }
         log.info("search face fail {}", search.toJSONString());
@@ -144,8 +142,8 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
      */
     @Override
     public String registerFace(String sJson) {
-        log.info("register face in param {}", sJson);
         JSONObject json = JSONObject.parseObject(sJson);
+        log.info("register face in params user_id={}", json.getString("user_id"));
         /*判断请求必要参数*/
         boolean images = json.containsKey("image");
         if (!images) {
@@ -176,7 +174,7 @@ public class WebServiceFaceServiceImpl implements IWebServiceFaceService {
             log.info("register face success");
             return JSONObject.toJSONString(Result.success());
         } else {
-            log.info("register face fail");
+            log.info("register face fail" + error_msg);
             return JSONObject.toJSONString(Result.fail(error_msg));
         }
     }
