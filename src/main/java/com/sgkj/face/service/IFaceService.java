@@ -46,7 +46,6 @@ public interface IFaceService {
      * @description :  添加人脸数据到百度
      * @date : 2019/7/8 17:41
      */
-    @WebMethod
     Result<JSONObject> registerFace(JSONObject json);
 
 
@@ -55,7 +54,6 @@ public interface IFaceService {
      * @description :  更新数据库人脸数据
      * @date : 2019/7/8 17:42
      */
-    @WebMethod
     Result<JSONObject> updateFace(JSONObject json);
 
     /**
@@ -63,7 +61,6 @@ public interface IFaceService {
      * @description : 删除人脸数据
      * @date : 2019/7/8 17:43
      */
-    @WebMethod
     Result<JSONObject> deleteFace(JSONObject json);
 
     /**
@@ -71,6 +68,12 @@ public interface IFaceService {
      * @description : 在线活体检测
      * @date : 2019/7/10 9:01
      */
-    @WebMethod
     Result<JSONObject> faceVerify(JSONObject json);
+
+    /**
+     * @author : HPC
+     * @date : Created in 2020/5/29
+     * @description : 身份验证，检验人脸与身份证号码是否一致
+     */
+    Result<JSONObject> personVerify(JSONObject json);
 }

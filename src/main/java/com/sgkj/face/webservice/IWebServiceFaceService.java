@@ -81,4 +81,13 @@ public interface IWebServiceFaceService {
     @WebMethod
     @WebResult(name = "String")
     String faceVerify(@WebParam(name = "data") String json);
+
+    /**
+     * @author : HPC
+     * @date : Created in 2020/5/29
+     * @description : 身份证人脸信息验证
+     */
+    @WebMethod
+    @WebResult(name = "String")
+    String personVerify(@WebParam(name = "data") String data);
 }

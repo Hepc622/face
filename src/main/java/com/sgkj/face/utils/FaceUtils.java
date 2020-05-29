@@ -272,7 +272,7 @@ public class FaceUtils {
      * @description : 在线活体检测
      * @date : 2019/7/10 8:45
      */
-    public static JSONObject faceverify(AipFace client, JSONObject json) {
+    public static JSONObject faceVerify(AipFace client, JSONObject json) {
         /*获取活体图片数据*/
         JSONArray images = json.getJSONArray("images");
 
@@ -303,6 +303,24 @@ public class FaceUtils {
             list.add(faceVerifyRequest);
         }
         org.json.JSONObject res = client.faceverify(list);
+        return JSONObject.parseObject(res.toString());
+    }
+
+    /**
+     * 检验人脸信息是否与身份证一致
+     */
+    public static JSONObject personVerify(AipFace client, JSONObject json) {
+        String image_type = "BASE64";
+        String image;
+        String id_card_number;
+        String name;
+        if (json.containsKey("image_type")) {
+            image_type = json.getString("image_type");
+        }
+        image = json.getString("image");
+        id_card_number = json.getString("id_card_number");
+        name = json.getString("name");
+        org.json.JSONObject res = client.personVerify(image, image_type, id_card_number, name, null);
         return JSONObject.parseObject(res.toString());
     }
 }

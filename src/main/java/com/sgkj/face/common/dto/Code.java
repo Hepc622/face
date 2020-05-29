@@ -66,4 +66,13 @@ public class Code {
      * 缺失face_token 参数
      */
     public static final String PARAM_FACE_TOKEN = "2003";
+
+    /**
+     * 缺失身份证号码
+     */
+    public static final String PARAM_ID_CARD = "2004";
+    /**
+     * 缺失姓名
+     */
+    public static final String PARAM_USER_NAME = "2005";
 }

@@ -10,6 +10,7 @@ import com.sgkj.face.utils.FaceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * @Author HPC
@@ -26,6 +27,12 @@ public class FaceServiceImpl implements IFaceService {
      */
     @Value("${face.matchScore}")
     private int matchScore;
+
+    /**
+     * 身份验证闸值
+     */
+    @Value("${face.verifyScore}")
+    private int verifyScore;
 
 
     @Autowired
@@ -212,7 +219,7 @@ public class FaceServiceImpl implements IFaceService {
             return Result.fail(Code.PARAM_USER_ID, "请求参数缺失【images】字段");
         }
         /*请求百度活体测试*/
-        JSONObject res = FaceUtils.faceverify(client, json);
+        JSONObject res = FaceUtils.faceVerify(client, json);
 
         /*判断是否请求成功了*/
         String error_msg = res.getString("error_msg");
@@ -354,6 +361,38 @@ public class FaceServiceImpl implements IFaceService {
             return Result.success(code, reason, jsonObject);
         } else {
             return Result.fail(error_msg);
+        }
+    }
+
+    /**
+     * @author : HPC
+     * @date : Created in 2020/5/29
+     * @description : 验证身份信息与人脸是否一致
+     */
+    @Override
+    public Result<JSONObject> personVerify(JSONObject json) {
+        /*判断必要参数*/
+        if (StringUtils.isEmpty(json.getString("images"))) {
+            return Result.fail(Code.PARAM_IMAGE, "请求参数缺失【images】字段");
+        }
+        if (StringUtils.isEmpty(json.getString("id_card_number"))) {
+            return Result.fail(Code.PARAM_ID_CARD, "请求参数缺失【id_card_number】字段");
+        }
+        if (StringUtils.isEmpty(json.getString("name"))) {
+            return Result.fail(Code.PARAM_USER_NAME, "请求参数缺失【name】字段");
+        }
+        /*请求百度活体测试*/
+        JSONObject res = FaceUtils.personVerify(client, json);
+        if (res != null) {
+            JSONObject result = res.getJSONObject("result");
+            float score = result.getFloatValue("score");
+            if (score >= verifyScore) {
+                return Result.success("身份证信息与人脸信息是同一个人!");
+            } else {
+                return Result.fail("身份证与人脸信息不是同一个人!");
+            }
+        } else {
+            return Result.fail("发起身份证与人脸信息验证失败,请重试!");
         }
     }
 }

@@ -18,6 +18,8 @@ baidu:
 face:
   # 人脸识别度达到多少算合格
   matchScore: 90
+  # 身份验证闸值
+  verifyScore: 80
   #  key
   appKey: "faceApp"
   #  秘钥
