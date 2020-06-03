@@ -7,6 +7,7 @@ import com.sgkj.face.common.dto.Code;
 import com.sgkj.face.common.dto.Result;
 import com.sgkj.face.service.IFaceService;
 import com.sgkj.face.utils.FaceUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.util.StringUtils;
  * @Description 人脸搜索对应api服务
  * @Date 2019/7/8 17:05
  */
+@Slf4j
 @Service
 public class FaceServiceImpl implements IFaceService {
 
@@ -133,22 +135,38 @@ public class FaceServiceImpl implements IFaceService {
      */
     @Override
     public Result<JSONObject> registerFace(JSONObject json) {
+        log.info("register face in params user_id={}", json.getString("user_id"));
         /*判断请求必要参数*/
         boolean images = json.containsKey("image");
         if (!images) {
-            return Result.fail(Code.PARAM_IMAGE, "请求参数缺失【image】字段");
+            log.info("register face 请求参数缺失【image】字段");
+            return Result.failParam("请求参数缺失【image】字段");
         }
         boolean userId = json.containsKey("user_id");
         if (!userId) {
-            return Result.fail(Code.PARAM_USER_ID, "请求参数缺失【user_id】字段");
+            log.info("register face 请求参数缺失【user_id】字段");
+            return Result.failParam("请求参数缺失【user_id】字段");
+        } else {
+            //身份证|姓名|性别(1男2女)|出生日期(yyyy-mm-dd)|手机号码|地址|
+            String user_id = json.getString("user_id");
+            if (user_id.contains("|")) {
+                String[] split = user_id.split("\\|");
+                json.put("user_info", user_id);
+                json.put("user_id", split[0]);
+            } else {
+                log.info("register face 请求参数【user_id】字段 格式不正确");
+                return Result.failParam("请求参数【user_id】字段格式不正确！正确格式 身份证|姓名|性别(1男2女)|出生日期(yyyy-mm-dd)|手机号码|地址| ");
+            }
         }
 
         /*添加人脸数据*/
         JSONObject res = FaceUtils.add(client, json);
         String error_msg = res.getString("error_msg");
         if (SUCCESS.equals(error_msg)) {
-            return Result.success(res.getJSONObject("result"));
+            log.info("register face success");
+            return Result.success();
         } else {
+            log.info("register face fail" + error_msg);
             return Result.fail(error_msg);
         }
     }
